@@ -1,21 +1,37 @@
 <template>
-  <div class="amap-wrap">
-    <el-amap
-      vid="amapDemo"
-      :center="center"
-      :zoom="zoom"
-      class="amap-demo"
-    ></el-amap>
+  <div>
+    <!-- 汽车数据渲染 -->
+    <Cars />
+    <!-- 地图 -->
+    <Map />
+    <!-- 会员（子路由） -->
+    <div id="children-view" :class="[show ? 'open' : '']">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
+import Map from "../amap/index";
+import Cars from "../cars/index";
 export default {
+  components: {
+    Map,
+    Cars,
+  },
   data() {
     return {
-      zoom: 18, // 配置高德地图初始缩放级别，在PC上，默认范围[3,18]
-      center: [116.396139, 39.917563], // 经纬度坐标，初始化地图的中心点
+      show: false,
     };
+  },
+  watch: {
+    // 监听路由变化
+    $route: {
+      handler(newValue) {
+        const routerName = newValue.name;
+        this.show = routerName !== "Index"; // 路由为User时才显示
+      },
+    },
   },
 };
 </script>
