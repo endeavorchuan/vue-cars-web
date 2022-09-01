@@ -4,33 +4,33 @@
     <Cars />
     <!-- 地图 -->
     <Map />
+    <!-- 导航 -->
+    <Navbar />
     <!-- 会员（子路由） -->
-    <div id="children-view" :class="[show ? 'open' : '']">
+    <div id="children-view" :class="{ open: show }">
       <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import Map from "../amap/index";
-import Cars from "../cars/index";
+import Map from "@/views/amap/index";
+import Cars from "@/views/cars/index";
+import Navbar from "@/components/navbar/index";
 export default {
   components: {
     Map,
     Cars,
+    Navbar,
   },
   data() {
-    return {
-      show: false,
-    };
+    return {};
   },
-  watch: {
-    // 监听路由变化
-    $route: {
-      handler(newValue) {
-        const routerName = newValue.name;
-        this.show = routerName !== "Index"; // 路由为User时才显示
-      },
+  // 改用computed监听路由信息，而不用watch
+  computed: {
+    show() {
+      const router = this.$route;
+      return router.name !== "Index";
     },
   },
 };
